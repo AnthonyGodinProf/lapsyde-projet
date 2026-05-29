@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Échelle SEP — Neuroéducation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F0EDE6;
+  --border: #E2DDD4;
+  --border2: #CCC8BE;
+  --text: #1A1714;
+  --text2: #5C5750;
+  --text3: #9C978E;
+  --purple: #5B4FD9;
+  --purple-light: #EAE8FA;
+  --purple-muted: #8B82E8;
+
+  --c1: #C1440E; --c1-bg: #FDF0EB; --c1-bar: #E8734A;
+  --c2: #8B5A00; --c2-bg: #FDF5E6; --c2-bar: #D4870A;
+  --c3: #2A6B3A; --c3-bg: #EBF6EE; --c3-bar: #4CAF6E;
+  --c4: #1A5FA0; --c4-bg: #E8F3FC; --c4-bar: #3B8FD4;
+  --c5: #4A3CB5; --c5-bg: #EDEAFC; --c5-bar: #7B6FE0;
+
+  --l1-bg: #FAF9F6; --l1-bd: #D6D2C8;
+  --l2-bg: #EEF5FD; --l2-bd: #9DC4E8;
+  --l3-bg: #ECF8F1; --l3-bd: #72C494;
+  --l4-bg: #EEEAFC; --l4-bd: #A89CE8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ---- HEADER ---- */
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  gap: 1rem;
+}
+.header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.header-sub {
+  font-size: 12px;
+  color: var(--text3);
+  margin-left: 10px;
+}
+.header-right { display: flex; align-items: center; gap: 8px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .15s; border: 1px solid transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-ghost {
+  background: transparent; border-color: var(--border2); color: var(--text2);
+}
+.btn-ghost:hover { background: var(--surface2); }
+.btn-primary {
+  background: var(--purple); color: white; border-color: var(--purple);
+}
+.btn-primary:hover { background: #4A3FC8; }
+.btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- PROGRESS STRIP ---- */
+.progress-strip {
+  height: 3px;
+  background: var(--border);
+  position: sticky;
+  top: 56px;
+  z-index: 99;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--purple);
+  transition: width .4s ease;
+  width: 0%;
+}
+
+/* ---- MAIN LAYOUT ---- */
+.app-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ---- INTRO ---- */
+.intro-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.6rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.intro-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+.intro-text { font-size: 13px; color: var(--text2); line-height: 1.65; }
+.intro-text strong { color: var(--text); }
+
+/* ---- COMPETENCE BLOCK ---- */
+.comp-block { margin-bottom: 2.4rem; }
+
+.comp-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.2rem;
+  padding-bottom: .6rem;
+  border-bottom: 1.5px solid var(--border);
+}
+.comp-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  flex-shrink: 0;
+}
+.comp-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  color: var(--text);
+}
+
+/* ---- INDICATOR ---- */
+.ind-block { margin-bottom: 1.4rem; }
+.ind-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: .5rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.arrow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.arrow-line { flex: 1; height: 1px; background: var(--border2); }
+.arrow-label { font-size: 10px; color: var(--text3); white-space: nowrap; font-style: italic; }
+
+/* ---- LEVEL GRID ---- */
+.levels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.level {
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s;
+  position: relative;
+  border: 1.5px solid transparent;
+}
+.level:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.level.active { border-color: var(--purple) !important; box-shadow: 0 0 0 3px var(--purple-light); }
+
+.l1 { background: var(--l1-bg); border-color: var(--l1-bd); }
+.l2 { background: var(--l2-bg); border-color: var(--l2-bd); }
+.l3 { background: var(--l3-bg); border-color: var(--l3-bd); }
+.l4 { background: var(--l4-bg); border-color: var(--l4-bd); }
+
+.level-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.level-n { font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: .04em; }
+.radio-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  background: white;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.radio-dot.checked { background: var(--purple); border-color: var(--purple); }
+.level-tag {
+  font-size: 10.5px;
+  font-style: italic;
+  color: var(--text3);
+  margin-bottom: 7px;
+  font-weight: 400;
+}
+.level-text {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.pts-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 9px;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: .03em;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar { position: sticky; top: 76px; }
+
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.score-card-header {
+  padding: .9rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* Global score */
+.global-wrap {
+  padding: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.global-ring {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+.global-ring svg { width: 72px; height: 72px; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--border); stroke-width: 6; }
+.ring-fill { fill: none; stroke: var(--purple); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 188.5; stroke-dashoffset: 188.5; transition: stroke-dashoffset .6s ease; }
+.global-num {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+.global-num-val { font-size: 20px; font-weight: 600; color: var(--text); line-height: 1; }
+.global-num-max { font-size: 9px; color: var(--text3); }
+.global-info { flex: 1; }
+.global-label { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.global-desc { font-size: 11px; color: var(--text2); line-height: 1.5; }
+
+/* Dim scores */
+.dim-list { padding: .4rem .6rem .8rem; }
+.dim-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 5px;
+  border-radius: 6px;
+}
+.dim-item + .dim-item { border-top: 1px solid var(--border); }
+.dim-pill {
+  font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 8px; flex-shrink: 0; min-width: 24px; text-align: center;
+}
+.dim-info { flex: 1; min-width: 0; }
+.dim-name { font-size: 11px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dim-interp { font-size: 10px; color: var(--text3); }
+.dim-score-val { font-size: 13px; font-weight: 600; color: var(--text); flex-shrink: 0; min-width: 32px; text-align: right; }
+.dim-bar-wrap { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 3px; }
+.dim-bar { height: 100%; border-radius: 2px; transition: width .5s ease; }
+
+/* Note card */
+.note-card {
+  background: var(--purple-light);
+  border: 1px solid #C8C2F0;
+  border-radius: 10px;
+  padding: .9rem 1rem;
+  font-size: 11px;
+  color: #3B2FA0;
+  line-height: 1.6;
+}
+
+/* ---- PRINT ---- */
+@media print {
+  .app-header, .progress-strip, .sidebar, .pts-badge, .arrow-row { display: none !important; }
+  body { background: white; }
+  .app-body { grid-template-columns: 1fr; padding: 1rem; }
+  .level { break-inside: avoid; }
+  .level.active { border: 2px solid #333 !important; box-shadow: none !important; }
+  .radio-dot.checked { background: #333 !important; border-color: #333 !important; }
+  .level-text, .level-tag, .ind-label, .comp-name { color: black !important; }
+  .l1{background:#f5f5f2!important;} .l2{background:#e8f3fd!important;} .l3{background:#dff0ea!important;} .l4{background:#eeedf8!important;}
+  .print-scores { display: block !important; }
+}
+.print-scores { display: none; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 800px) {
+  .app-body { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+}
+@media (max-width: 560px) {
+  .levels { grid-template-columns: 1fr 1fr; }
+  .app-body { padding: 1rem 1rem 3rem; }
+  .header-sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <span class="header-title">Échelle SEP — Neuroéducation</span>
+      <span class="header-sub">5 compétences · 10 indicateurs</span>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-ghost" onclick="resetAll()">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.46"/></svg>
+        Réinitialiser
+      </button>
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Exporter PDF
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="progress-strip"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="app-body">
+
+  <!-- LEFT COLUMN -->
+  <div class="main-col">
+
+    <div class="intro-card">
+      <div class="intro-icon">🧠</div>
+      <div class="intro-text">
+        <strong>Comment utiliser cette échelle ?</strong> Pour chaque indicateur, sélectionnez le niveau qui correspond le mieux à votre sentiment de capacité actuel. Les scores SEP se mettent à jour en temps réel dans la colonne de droite. Formulation selon <strong>Bandura (2006)</strong> — chaque item exprime une capacité perçue, non une intention ou une fréquence.
+      </div>
+    </div>
+
+    <div id="scale"></div>
+
+  </div>
+
+  <!-- RIGHT COLUMN (SIDEBAR) -->
+  <aside class="sidebar">
+
+    <div class="score-card">
+      <div class="score-card-header">Score SEP Global</div>
+      <div class="global-wrap">
+        <div class="global-ring">
+          <svg viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="30"/>
+            <circle class="ring-fill" id="ringFill" cx="36" cy="36" r="30"/>
+          </svg>
+          <div class="global-num">
+            <div class="global-num-val" id="globalVal">—</div>
+            <div class="global-num-max">/ 40</div>
+          </div>
+        </div>
+        <div class="global-info">
+          <div class="global-label" id="globalLabel">En attente</div>
+          <div class="global-desc" id="globalDesc">Complétez l'échelle pour voir votre score global.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="score-card">
+      <div class="score-card-header">Scores par dimension</div>
+      <div class="dim-list" id="dimList"></div>
+    </div>
+
+    <div class="note-card">
+      <strong>Note méthodologique</strong><br>
+      Un score SEP élevé reflète un fort sentiment d'efficacité personnelle perçu — pas nécessairement une performance observée. Le SEP est une croyance qui se développe par l'expérience (Bandura, 2007).
+    </div>
+
+  </aside>
+
+</div>
+
+<script>
+const data = [
+  { comp:"C1", name:"Enseigner le fonctionnement du cerveau", cc:"c1", indicators:[
+    { label:"Maîtrise des savoirs neuroscientifiques fondamentaux", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable de mobiliser des notions de neuroéducation dans mon travail d'enseignant." },
+      { tag:"Premiers pas", text:"Je suis capable de citer quelques notions de base sur le cerveau (mémoire, attention, émotion) sans encore les relier à ma pratique." },
+      { tag:"En développement", text:"Je suis capable de relier les principaux concepts de neuroéducation à des observations concrètes faites en classe et de les utiliser pour ajuster ma pratique pédagogique." },
+      { tag:"Maîtrise", text:"Je suis capable d'évaluer de nouvelles ressources en neuroéducation en m'appuyant sur les résultats probants des sciences cognitives, en exerçant un esprit critique et en me documentant activement, pour en tirer des implications concrètes pour ma pratique." }
+    ]},
+    { label:"Intégration dans les pratiques de classe", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable de faire le lien entre le fonctionnement du cerveau et les situations d'apprentissage que je propose en classe." },
+      { tag:"Premiers pas", text:"Je suis capable d'évoquer occasionnellement une notion sur le cerveau en classe, sans encore la relier explicitement à la situation d'apprentissage en cours." },
+      { tag:"En développement", text:"Je suis capable d'intégrer des références au fonctionnement du cerveau de façon régulière dans mes séquences et mes rétroactions aux élèves." },
+      { tag:"Maîtrise", text:"Je suis capable de faire du fonctionnement du cerveau un fil conducteur explicite de ma pratique, au point que mes élèves y font eux-mêmes référence spontanément." }
+    ]}
+  ]},
+  { comp:"C2", name:"Gérer la charge cognitive et le contrôle inhibiteur", cc:"c2", indicators:[
+    { label:"Gestion de la charge cognitive dans la conception des activités", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable de tenir compte de la charge cognitive dans la conception de mes activités." },
+      { tag:"Premiers pas", text:"Je suis capable d'identifier, après une activité, les éléments qui ont pu générer une surcharge cognitive chez mes élèves." },
+      { tag:"En développement", text:"Je suis capable de concevoir une activité en fragmentant les tâches complexes, en soutenant la mémoire de travail et en éliminant les informations parasites." },
+      { tag:"Maîtrise", text:"Je suis capable de concevoir des activités en anticipant la diversité des profils cognitifs de mes élèves, de façon à ce que la conception elle-même réponde aux besoins de chacun, sans ajustement au cas par cas." }
+    ]},
+    { label:"Enseignement explicite du contrôle inhibiteur", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable d'aborder le concept de contrôle inhibiteur avec mes élèves." },
+      { tag:"Premiers pas", text:"Je suis capable de nommer le contrôle inhibiteur et d'en donner un exemple concret compréhensible pour mes élèves." },
+      { tag:"En développement", text:"Je suis capable d'enseigner explicitement le contrôle inhibiteur, de proposer des activités ciblées pour l'entraîner et de l'articuler aux apprentissages disciplinaires." },
+      { tag:"Maîtrise", text:"Je suis capable de créer les conditions pour que mes élèves comprennent le rôle du contrôle inhibiteur dans leurs apprentissages et mobilisent des stratégies autonomes pour le renforcer." }
+    ]}
+  ]},
+  { comp:"C3", name:"Piloter l'attention et la consolidation des apprentissages", cc:"c3", indicators:[
+    { label:"Captation et maintien de l'attention", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable d'utiliser des stratégies explicites pour capter et maintenir l'attention de mes élèves au cours d'une séquence." },
+      { tag:"Premiers pas", text:"Je suis capable d'utiliser ponctuellement une accroche ou un support varié pour capter l'attention, sans stratégie structurée pour maintenir l'engagement dans la durée." },
+      { tag:"En développement", text:"Je suis capable de construire une séquence qui active l'attention dès le départ, alterne les modalités et les phases, intègre des pauses cognitives et s'ajuste aux signaux d'engagement des élèves." },
+      { tag:"Maîtrise", text:"Je suis capable de rendre les mécanismes attentionnels explicites pour mes élèves et de les former à réguler eux-mêmes leur attention et à en devenir acteurs." }
+    ]},
+    { label:"Consolidation des apprentissages", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable d'utiliser des stratégies structurées pour consolider les apprentissages dans le temps." },
+      { tag:"Premiers pas", text:"Je suis capable de proposer ponctuellement des activités de révision sans les planifier ni les relier explicitement aux mécanismes de la mémoire." },
+      { tag:"En développement", text:"Je suis capable de concevoir des séquences intégrant récupération active, révisions espacées et alternance des contenus pour favoriser une consolidation durable." },
+      { tag:"Maîtrise", text:"Je suis capable d'enseigner explicitement ces stratégies de consolidation à mes élèves et de les accompagner jusqu'à une utilisation autonome et transférable." }
+    ]}
+  ]},
+  { comp:"C4", name:"Transformer les pratiques d'apprentissage des élèves", cc:"c4", indicators:[
+    { label:"Enseignement du fonctionnement de l'attention", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable d'enseigner explicitement à mes élèves comment fonctionne leur attention." },
+      { tag:"Premiers pas", text:"Je suis capable d'expliquer à mes élèves, en termes simples, ce qu'est l'attention et pourquoi elle peut se disperser, et de leur donner quelques conseils pour mieux se concentrer." },
+      { tag:"En développement", text:"Je suis capable d'enseigner les différents types d'attention (distracteurs, récupération) et de l'articuler directement aux activités d'apprentissage en cours." },
+      { tag:"Maîtrise", text:"Je suis capable d'amener mes élèves à décrire leur propre profil attentionnel, à en comprendre les mécanismes et à s'en servir pour réguler leur engagement de façon autonome." }
+    ]},
+    { label:"Transformation des pratiques d'apprentissage (école / maison)", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable d'enseigner des stratégies d'apprentissage efficaces ni d'influencer les pratiques de travail de mes élèves." },
+      { tag:"Premiers pas", text:"Je suis capable de présenter certaines stratégies d'apprentissage à mes élèves, sans encore expliciter leur fonctionnement ni accompagner leur mise en œuvre en autonomie." },
+      { tag:"En développement", text:"Je suis capable d'enseigner explicitement des stratégies efficaces (récupération, espacement, auto-explication), d'accompagner leur mise en œuvre et d'encourager leur transfert à la maison." },
+      { tag:"Maîtrise", text:"Je suis capable de créer les conditions pour que mes élèves comprennent comment apprendre, adaptent eux-mêmes leurs stratégies et les réinvestissent à l'école comme à la maison." }
+    ]}
+  ]},
+  { comp:"C5", name:"Développer l'autorégulation des élèves (SRL)", cc:"c5", indicators:[
+    { label:"Soutien à la fixation d'objectifs d'apprentissage", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable d'impliquer mes élèves dans la fixation de leurs propres objectifs d'apprentissage." },
+      { tag:"Premiers pas", text:"Je suis capable de communiquer les objectifs d'apprentissage à mes élèves et de les inviter parfois à se fixer leurs propres sous-objectifs." },
+      { tag:"En développement", text:"Je suis capable de guider mes élèves dans la formulation d'objectifs personnels mesurables (type SMART) en lien avec les critères de réussite." },
+      { tag:"Maîtrise", text:"Je suis capable de créer les conditions pour que mes élèves fixent, suivent et ajustent leurs objectifs d'apprentissage de façon pleinement autonome." }
+    ]},
+    { label:"Soutien au monitoring et à l'auto-évaluation", levels:[
+      { tag:"Pas encore capable", text:"Je ne me sens pas encore capable de proposer à mes élèves des outils ou des moments structurés pour évaluer leur propre progression." },
+      { tag:"Premiers pas", text:"Je suis capable de proposer ponctuellement des moments d'auto-évaluation à mes élèves, sans cadre ni outil structuré." },
+      { tag:"En développement", text:"Je suis capable d'intégrer régulièrement des pratiques de monitoring structurées (journal, grilles, exit tickets) dans mes séquences d'apprentissage." },
+      { tag:"Maîtrise", text:"Je suis capable de former mes élèves à évaluer eux-mêmes leurs progrès, à identifier leurs obstacles et à ajuster leurs stratégies d'apprentissage de façon autonome et continue." }
+    ]}
+  ]}
+];
+
+const POINTS = [1,2,3,4];
+const MAX_DIM = 8, MAX_GLOBAL = 40;
+const LV_CLASSES = ['l1','l2','l3','l4'];
+const selections = {};
+
+function dimInterpret(score, answered) {
+  if (answered === 0) return '—';
+  if (answered === 1) return '1 indicateur / 2';
+  if (score <= 2) return 'SEP faible';
+  if (score <= 4) return 'SEP en construction';
+  if (score <= 6) return 'SEP modéré';
+  return 'SEP solide';
+}
+
+function globalInterpret(score, answered) {
+  if (answered < 10) return { label: answered + '/10 complétés', desc: 'Poursuivez pour obtenir votre score global.' };
+  const p = score / MAX_GLOBAL;
+  if (p <= .25) return { label: 'SEP très faible', desc: 'De nombreux freins perçus. Point de départ pour progresser.' };
+  if (p <= .50) return { label: 'SEP en construction', desc: 'Quelques repères acquis. Le SEP reste fragile sur plusieurs compétences.' };
+  if (p <= .75) return { label: 'SEP modéré à solide', desc: 'Sentiment d\'efficacité installé, quelques compétences à consolider.' };
+  return { label: 'SEP élevé', desc: 'Fort sentiment d\'efficacité sur l\'ensemble des compétences.' };
+}
+
+function updateScores() {
+  let total = 0, answered = 0;
+  const dimList = document.getElementById('dimList');
+  dimList.innerHTML = '';
+
+  data.forEach((comp, ci) => {
+    let dimScore = 0, dimAns = 0;
+    comp.indicators.forEach((_, ii) => {
+      const k = `${ci}-${ii}`;
+      if (selections[k] !== undefined) { dimScore += POINTS[selections[k]]; dimAns++; total += POINTS[selections[k]]; answered++; }
+    });
+    const pct = dimAns > 0 ? (dimScore / MAX_DIM) * 100 : 0;
+    const row = document.createElement('div');
+    row.className = 'dim-item';
+    row.innerHTML = `
+      <span class="dim-pill" style="background:var(--${comp.cc}-bg);color:var(--${comp.cc})">${comp.comp}</span>
+      <div class="dim-info">
+        <div class="dim-name">${comp.name}</div>
+        <div class="dim-interp">${dimInterpret(dimScore, dimAns)}</div>
+        <div class="dim-bar-wrap"><div class="dim-bar" style="width:${pct}%;background:var(--${comp.cc}-bar)"></div></div>
+      </div>
+      <div class="dim-score-val">${dimAns > 0 ? dimScore : '—'}<span style="font-size:10px;font-weight:400;color:var(--text3)">/8</span></div>
+    `;
+    dimList.appendChild(row);
+  });
+
+  // Global ring
+  const circumference = 188.5;
+  const offset = answered > 0 ? circumference - (total / MAX_GLOBAL) * circumference : circumference;
+  document.getElementById('ringFill').style.strokeDashoffset = offset;
+  document.getElementById('globalVal').textContent = answered > 0 ? total : '—';
+  const interp = globalInterpret(total, answered);
+  document.getElementById('globalLabel').textContent = interp.label;
+  document.getElementById('globalDesc').textContent = interp.desc;
+
+  // Progress bar
+  document.getElementById('progressFill').style.width = (answered / 10 * 100) + '%';
+}
+
+function resetAll() {
+  Object.keys(selections).forEach(k => delete selections[k]);
+  document.querySelectorAll('.level').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.radio-dot').forEach(el => el.classList.remove('checked'));
+  updateScores();
+}
+
+function build() {
+  const scale = document.getElementById('scale');
+  data.forEach((comp, ci) => {
+    const block = document.createElement('div');
+    block.className = 'comp-block';
+    block.innerHTML = `<div class="comp-title">
+      <span class="comp-pill" style="background:var(--${comp.cc}-bg);color:var(--${comp.cc})">${comp.comp}</span>
+      <span class="comp-name">${comp.name}</span>
+    </div>`;
+
+    comp.indicators.forEach((ind, ii) => {
+      const indDiv = document.createElement('div');
+      indDiv.className = 'ind-block';
+      indDiv.innerHTML = `
+        <div class="ind-label">${ind.label}</div>
+        <div class="arrow-row"><span class="arrow-label">efficacité perçue croissante</span><div class="arrow-line"></div><span class="arrow-label">→</span></div>
+      `;
+      const grid = document.createElement('div');
+      grid.className = 'levels';
+
+      ind.levels.forEach((lv, li) => {
+        const card = document.createElement('div');
+        card.className = `level ${LV_CLASSES[li]}`;
+        card.id = `card-${ci}-${ii}-${li}`;
+        card.innerHTML = `
+          <div class="level-head">
+            <span class="level-n">N${li+1} · ${POINTS[li]} pt</span>
+            <div class="radio-dot" id="rd-${ci}-${ii}-${li}"></div>
+          </div>
+          <div class="level-tag">${lv.tag}</div>
+          <p class="level-text">${lv.text}</p>
+        `;
+        card.addEventListener('click', () => {
+          const key = `${ci}-${ii}`;
+          ind.levels.forEach((_, idx) => {
+            document.getElementById(`rd-${ci}-${ii}-${idx}`)?.classList.remove('checked');
+            document.getElementById(`card-${ci}-${ii}-${idx}`)?.classList.remove('active');
+          });
+          document.getElementById(`rd-${ci}-${ii}-${li}`).classList.add('checked');
+          card.classList.add('active');
+          selections[key] = li;
+          updateScores();
+        });
+        grid.appendChild(card);
+      });
+
+      indDiv.appendChild(grid);
+      block.appendChild(indDiv);
+    });
+    scale.appendChild(block);
+  });
+}
+
+build();
+updateScores();
+</script>
+</body>
+</html>
